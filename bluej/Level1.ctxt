@@ -1,0 +1,17 @@
+#BlueJ class context
+#Thu May 21 10:48:01 PDT 2026
+comment0.target=Level1
+comment0.text=\n The test class Level1.\n\n @author  (your name)\n @version (a version number or a date)\n
+comment1.target=Level1()
+comment1.text=\n Default constructor for test class Level1\n
+comment2.target=void setUp()
+comment2.text=\n Sets up the test fixture.\n\n Called before every test case method.\n
+comment3.target=void tearDown()
+comment3.text=\n Tears down the test fixture.\n\n Called after every test case method.\n
+comment4.target=void testAddStudent()
+comment5.target=void testAddClub()
+comment6.target=void testAssignStudentToClub()
+comment7.target=void testProcessCommand()
+comment8.target=void testSortClubsByName()
+comment9.target=void testSortStudentsByName()
+numComments=10

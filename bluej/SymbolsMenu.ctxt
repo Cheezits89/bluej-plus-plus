@@ -1,0 +1,9 @@
+#BlueJ class context
+#Thu May 21 10:30:21 PDT 2026
+comment0.target=SymbolsMenu
+comment1.params=bpackage
+comment1.target=javafx.scene.control.MenuItem getToolsMenuItem(bluej.extensions2.BPackage)
+comment2.target=void createNewStage()
+comment3.params=text
+comment3.target=void insertText(java.lang.String)
+numComments=4

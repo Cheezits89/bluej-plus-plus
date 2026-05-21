@@ -75,3 +75,34 @@
 .line-container {
     -fx-background-color: white;
 }
+
+/* Code outline sidebar */
+.code-outline-panel {
+    -fx-background-color: rgb(240, 240, 240);
+    -fx-border-color: hsb(0, 0%, 70%);
+    -fx-border-width: 0 0 0 1;
+}
+
+.code-outline-header {
+    -fx-font-weight: bold;
+    -fx-padding: 4 8 4 8;
+    -fx-font-size: 0.9em;
+    -fx-border-color: hsb(0, 0%, 70%);
+    -fx-border-width: 0 0 1 0;
+}
+
+.code-outline-tree .tree-cell {
+    -fx-font-size: 1.05em;
+}
+
+.outline-icon {
+    -fx-font-size: 0.75em;
+    -fx-font-weight: bold;
+    -fx-min-width: 1.4em;
+    -fx-alignment: center;
+    -fx-padding: 0 3 0 0;
+}
+
+.outline-icon-class  { -fx-text-fill: #5b8dd9; }
+.outline-icon-method { -fx-text-fill: #a67c52; }
+.outline-icon-field  { -fx-text-fill: #6aaa5e; }

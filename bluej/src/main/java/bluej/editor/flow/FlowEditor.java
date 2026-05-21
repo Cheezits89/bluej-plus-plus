@@ -135,6 +135,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -210,6 +211,7 @@ public class FlowEditor extends ScopeColorsBorderPane implements TextEditor, Flo
     private int currentStepLineIndex = -1;
     private ComboBox<String> interfaceToggle;
     private final WebView htmlPane;
+    private final CodeOutlinePanel codeOutlinePanel = new CodeOutlinePanel();
     private String filename;                // name of file or null
     private String docFilename;             // path to javadoc html file
     private Charset characterSet;           // character set of the file
@@ -539,6 +541,11 @@ public class FlowEditor extends ScopeColorsBorderPane implements TextEditor, Flo
         this.document = flowEditorPane.getDocument();
         this.document.addListener(false, this);
         this.javaSyntaxView = new JavaSyntaxView(document, flowEditorPane, this, parentResolver, syntaxHighlighting);
+        javaSyntaxView.setOnStructureChanged(() ->
+            JavaFXUtil.runAfterCurrent(() ->
+                codeOutlinePanel.refresh(javaSyntaxView.getRootNode())
+            )
+        );
         this.flowEditorPane.setErrorQuery(errorManager);
         this.undoManager = new UndoManager(document);
         this.fetchTabbedEditor = fetchTabbedEditor;
@@ -551,6 +558,10 @@ public class FlowEditor extends ScopeColorsBorderPane implements TextEditor, Flo
         this.editorFixesMgr = new EditorFixesManager(watcher == null || watcher.getPackage() == null ? new CompletableFuture<>() : watcher.getPackage().getProject().getImports());
         htmlPane.visibleProperty().bind(viewingHTML);
         setCenter(new StackPane(flowEditorPane, htmlPane));
+        codeOutlinePanel.setNavigationCallback(offset -> {
+            flowEditorPane.positionCaret(offset);
+            flowEditorPane.requestFocus();
+        });
         this.interfaceToggle = createInterfaceSelector();
         interfaceToggle.setDisable(!sourceIsCode);
         Region toolbar = createToolbar(interfaceToggle.heightProperty());
@@ -602,7 +613,9 @@ public class FlowEditor extends ScopeColorsBorderPane implements TextEditor, Flo
         });
         errorListPane.setTop(new Label("Errors"));
         errorListPane.setPadding(new Insets(3));
-        setRight(errorListPane);
+        VBox rightSidebar = new VBox(codeOutlinePanel, errorListPane);
+        VBox.setVgrow(codeOutlinePanel, Priority.ALWAYS);
+        setRight(rightSidebar);
         errorList.getItems().addListener((ListChangeListener<? super ErrorDetails>) c -> {
             // Automatically hide list when no errors:
             if (c.getList().isEmpty())

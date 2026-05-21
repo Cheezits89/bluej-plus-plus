@@ -105,6 +105,7 @@ public class JavaSyntaxView implements ReparseableDocument, LineDisplayListener
     private final EntityResolver parentResolver;
     private ParsedCUNode rootNode;
     private NodeTree<ReparseRecord> reparseRecordTree;
+    private Runnable onStructureChanged;
     private final ScopeColors scopeColors;
     private final BooleanExpression syntaxHighlighting;
     private final Display display;
@@ -144,6 +145,22 @@ public class JavaSyntaxView implements ReparseableDocument, LineDisplayListener
     public Map<Integer, List<BackgroundItem>> getScopeBackgrounds()
     {
         return scopeBackgrounds.scopeBackgrounds;
+    }
+
+    public ParsedCUNode getRootNode()
+    {
+        return rootNode;
+    }
+
+    public void setOnStructureChanged(Runnable r)
+    {
+        this.onStructureChanged = r;
+    }
+
+    private void notifyStructureChanged()
+    {
+        if (onStructureChanged != null)
+            onStructureChanged.run();
     }
 
     public EntityResolver getEntityResolver()
@@ -2581,6 +2598,7 @@ public class JavaSyntaxView implements ReparseableDocument, LineDisplayListener
                 applyPendingScopeBackgrounds();
                 display.repaint();
                 reparseRunner = null;
+                notifyStructureChanged();
             }
         }
     }

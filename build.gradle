@@ -10,9 +10,11 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.release = 21
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.release = 21
+    }
 }
 subprojects {
     ext.versionProps = new Properties()
