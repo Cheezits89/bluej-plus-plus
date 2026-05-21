@@ -204,7 +204,27 @@ task packageBlueJMacAarch(type: Exec) {
             "-Dbluej_home=" + projectDir.getAbsoluteFile(),
             "-Dmac_arch=arm64",
             "-Dmac_bundler_arch_dir=aarch64"
+
+    // RESTORE THE MISSING NATIVE RUNTIME LINKS FOR MAC APP BUNDLE
+    doLast {
+        def appPlugInDir = "${projectDir}/package/BlueJ.app/Contents/PlugIns"
+
+        println "Patching bundled macOS architecture paths..."
+
+        // Ensure directory exists
+        exec {
+            commandLine "mkdir", "-p", "${appPlugInDir}/aarch64/Contents/Home/bin"
+        }
+
+        // Deep copy the binary folder natively via macOS shell to maintain libjli dylib mappings
+        exec {
+            commandLine "cp", "-R", "${System.getProperty('java.home')}/", "${appPlugInDir}/aarch64/Contents/Home/"
+        }
+
+        println "Mac application bundle successfully patched!"
+    }
 }
+
 packageBlueJMacIntel.dependsOn assemble
 packageBlueJMacAarch.dependsOn assemble
 
