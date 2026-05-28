@@ -183,13 +183,14 @@ public class CodeOutlinePanel extends VBox
                 List<String> paramNames = mn.getParamNames();
                 List<JavaEntity> paramTypes = mn.getParamTypes();
                 String params = "";
-                for (int i = 0; i < paramNames.size(); i++) {
-                    params += paramTypes.get(i).getName() + " " + paramNames.get(i);
+                if (paramTypes.size() != 0) { params = paramTypes.get(0).getName() + " " + paramNames.get(0); }
+                for (int i = 1; i < paramNames.size(); i++) {
+                    params += ", " + paramTypes.get(i).getName() + " " + paramNames.get(i);
                 }
 
                 result = "(" + params + ")" + " -> " + (((MethodNode) node).getReturnType() != null ? ((MethodNode) node).getReturnType().getName() : null);
             }
-            case ParsedNode.NODETYPE_FIELD     -> { result = ": " + ((FieldNode) node).getFieldTypeAsPlainString(); }
+            case ParsedNode.NODETYPE_FIELD  -> { result = ": " + ((FieldNode) node).getFieldTypeAsPlainString(); }
         }
 
         return result;
